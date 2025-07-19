@@ -1,25 +1,116 @@
-// routes/ocorrenciasRoutes.js
 const express = require('express');
 const router = express.Router();
 const ocorrenciasController = require('../controllers/ocorrenciasController');
 
 /**
- * @fileoverview Defines the API routes for 'ocorrencias'.
- * This layer is responsible for mapping specific URL paths and HTTP methods
- * to the corresponding controller functions. It should be kept lean,
- * focusing solely on routing.
+ * @swagger
+ * tags:
+ *   name: Ocorrências
+ *   description: Gerenciamento de ocorrências
  */
 
-// GET all occurrences
+/**
+ * @swagger
+ * /ocorrencias:
+ *   get:
+ *     summary: Lista todas as ocorrências
+ *     tags: [Ocorrências]
+ *     responses:
+ *       200:
+ *         description: Lista de ocorrências
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ */
 router.get('/', ocorrenciasController.getOcorrencias);
 
-// POST a new occurrence
+/**
+ * @swagger
+ * /ocorrencias:
+ *   post:
+ *     summary: Cria uma nova ocorrência
+ *     tags: [Ocorrências]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - titulo
+ *               - descricao
+ *               - status
+ *             properties:
+ *               titulo:
+ *                 type: string
+ *               descricao:
+ *                 type: string
+ *               status:
+ *                 type: string
+ *                 enum: [pendente, resolvido]
+ *     responses:
+ *       201:
+ *         description: Ocorrência criada com sucesso
+ */
 router.post('/', ocorrenciasController.createOcorrencia);
 
-// PUT (update) an existing occurrence by ID
+/**
+ * @swagger
+ * /ocorrencias/{id}:
+ *   put:
+ *     summary: Atualiza uma ocorrência existente
+ *     tags: [Ocorrências]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: ID da ocorrência
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - titulo
+ *               - descricao
+ *               - status
+ *             properties:
+ *               titulo:
+ *                 type: string
+ *               descricao:
+ *                 type: string
+ *               status:
+ *                 type: string
+ *                 enum: [pendente, resolvido]
+ *     responses:
+ *       200:
+ *         description: Ocorrência atualizada com sucesso
+ */
 router.put('/:id', ocorrenciasController.updateOcorrencia);
 
-// DELETE an occurrence by ID
+/**
+ * @swagger
+ * /ocorrencias/{id}:
+ *   delete:
+ *     summary: Remove uma ocorrência pelo ID
+ *     tags: [Ocorrências]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: ID da ocorrência
+ *     responses:
+ *       204:
+ *         description: Ocorrência deletada com sucesso
+ */
 router.delete('/:id', ocorrenciasController.deleteOcorrencia);
 
 module.exports = router;
